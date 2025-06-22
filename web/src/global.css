@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+:root {
+    --color-primary: #7ed957;
+    --color-secondary: #00bf63;
+    --color-background: #fdfff6;
+}
+
+@theme {
+    --color-primary: var(--color-primary);
+    --color-secondary: var(--color-secondary);
+    --color-background: var(--color-background);
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    letter-spacing: -0.025em;
+    background-color: var(--color-background);
+}
+
+#root {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
