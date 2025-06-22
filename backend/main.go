@@ -12,16 +12,16 @@ import (
 )
 
 func main() {
-	database.InitDB()
-    database.Migrate()
-
 	if err := godotenv.Load(); err != nil {
         log.Println("No .env file found, relying on environment variables")
     }
 
+	database.InitDB()
+    database.Migrate()
+
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5174"},
+		AllowOrigins:     []string{"*"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
