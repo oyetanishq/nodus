@@ -59,15 +59,11 @@ export default function ShareFile() {
                 });
             });
 
-            newPeer.on("connect", () => {
-                console.log("connected");
-                setConnected(true);
-            });
-            newPeer.on("close", () => console.log("close"));
+            newPeer.on("connect", () => setConnected(true));
+            newPeer.on("close", () => setConnected(false));
 
             newPeer.on("data", async (data: Uint8Array) => {
                 const msg = data.toString();
-                console.log(msg);
                 if (msg === "request_file_info" && fileRef.current) {
                     const metadata = {
                         name: fileRef.current.name,
@@ -121,20 +117,15 @@ export default function ShareFile() {
                 });
             });
 
-            newPeer.on("connect", () => {
-                console.log("connected");
-                setConnected(true);
-            });
+            newPeer.on("connect", () => setConnected(true));
+            newPeer.on("close", () => setConnected(false));
 
             newPeer.on("data", (data: Uint8Array) => {
                 const str = data.toString();
-                console.log(str);
 
                 try {
                     const parsed = JSON.parse(str);
-                    if (parsed.type === "file_info") {
-                        setFileInfo(parsed.metadata);
-                    }
+                    if (parsed.type === "file_info") setFileInfo(parsed.metadata);
                 } catch {
                     if (str === "end_of_file") {
                         setDownloadReady(true);
@@ -184,6 +175,7 @@ export default function ShareFile() {
     return (
         <div className="p-4">
             <h2 className="text-xl font-bold mb-2">Peer-to-Peer File Transfer</h2>
+            {connected ? <span className="text-sm text-green-800">connected to peer</span> : <span className="text-sm text-red-800">connecting to peer...</span>}
 
             {sender && (
                 <div className="mb-4">
@@ -217,8 +209,8 @@ export default function ShareFile() {
 
             {!sender && (
                 <div className="space-y-4">
-                    {!fileInfo && connected && (
-                        <button onClick={askFileInfo} className="px-4 py-2 bg-blue-500 text-white rounded">
+                    {!fileInfo && (
+                        <button onClick={askFileInfo} className={`px-4 py-2 bg-blue-500 text-white rounded ${connected ? "cursor-pointer" : "opacity-50 cursor-not-allowed"}`}>
                             Ask for File Info
                         </button>
                     )}
