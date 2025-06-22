@@ -17,7 +17,7 @@ func main() {
     }
 
 	database.InitDB()
-    database.Migrate()
+    // database.Migrate()
 
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
@@ -30,7 +30,7 @@ func main() {
 
     router.SetupHomeRoutes(r)
 
-    if err := r.Run("localhost:3000"); err != nil {
+    if err := r.Run(":3000"); err != nil {
         log.Fatalf("Failed to run server: %v", err)
     }
 }
