@@ -20,3 +20,41 @@ check out it's live: [**nodus.tanishqsingh.com**](https://nodus.tanishqsingh.com
 
 #### 2. Video Call
 ![video call example](./preview/video-call-ex-1.png)
+
+<h2 align="center">Run Locally?</h2>
+
+- preview **.env** files are provided in respective folder
+
+#### Frontend
+```bash
+cd web
+
+# Install packages
+yarn
+
+# Build frontend
+yarn run build
+
+# Serve dist folder
+serve -s dist
+```
+
+#### Backend
+1. with docker
+```bash
+cd backend
+
+# To build docker image
+docker build -t nodus-backend:v1 .
+
+# To run container with port mapping, and env file
+docker run -p 3000:3000 --env-file .env nodus-backend:v1
+```
+
+2. without docker
+```bash
+cd backend
+
+go build main.go -o out
+./out
+```
