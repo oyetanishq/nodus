@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { iceServers } from "@/config/ice-servers";
 
-import { Loader, Mic, MicOff, Video, VideoOff } from "lucide-react";
+import { ClipboardCopy, Loader, Mic, MicOff, Video, VideoOff } from "lucide-react";
 
 // @ts-ignore
 import Peer from "simple-peer/simplepeer.min.js";
 import { type Instance } from "simple-peer";
+import { copyToClipboard } from "@/utils/copy";
 
 export default function VideoCall() {
     const [searchParams] = useSearchParams();
@@ -120,16 +121,15 @@ export default function VideoCall() {
         <main className="flex flex-col flex-1 w-full items-center justify-start px-3 sm:px-5 md:px-8 pb-3 sm:pb-5 md:pb-8">
             <div className="relative w-full flex-1 mb-4 px-4">
                 {/* Fullscreen remove video */}
-                {connected ? (
-                    <video ref={remoteVideoRef} autoPlay muted playsInline className="absolute inset-0 w-full h-full object-cover border rounded-md scale-x-[-1]" />
-                ) : (
-                    <div className="flex justify-center items-center absolute inset-0 w-full h-full object-cover border border-gray-100 rounded-md shadow-2xl gap-2">
+                <video ref={remoteVideoRef} autoPlay playsInline className="absolute inset-0 w-full h-full object-cover border rounded-md scale-x-[-1]" />
+                {!connected && (
+                    <div className="flex justify-center items-center absolute inset-0 w-full h-full object-cover border border-gray-100 rounded-md shadow-2xl">
                         <span className="text-black tracking-wide">waiting for peer</span>
                         <Loader className="size-4 animate-spin" />
                     </div>
                 )}
                 {/* Small local video at bottom right */}
-                <video ref={localVideoRef} autoPlay playsInline className="absolute bottom-4 right-4 w-1/4 aspect-video object-cover rounded-md shadow-lg scale-x-[-1]" />
+                <video ref={localVideoRef} autoPlay muted playsInline className="absolute bottom-4 right-4 w-1/4 aspect-video object-cover rounded-md shadow-lg scale-x-[-1]" />
             </div>
 
             {/* audio and video controls */}
@@ -140,6 +140,13 @@ export default function VideoCall() {
                 <button type="button" className="p-2 rounded-md border cursor-pointer" onClick={() => setVideoOff((s) => !s)}>
                     {videoOff ? <VideoOff className="size-6" /> : <Video className="size-6" />}
                 </button>
+                <div
+                    onClick={() => copyToClipboard(`${window.location.href.split("?")[0]}`)}
+                    className="flex gap-2 justify-center items-center py-3 px-3 rounded-md border border-secondary bg-secondary/10 hover:bg-secondary/20 active:bg-secondary/10 duration-300 text-secondary cursor-pointer"
+                >
+                    <span className="text-xs">CODE: {params.code?.toUpperCase()}</span>
+                    <ClipboardCopy className="size-4" />
+                </div>
             </div>
         </main>
     );
