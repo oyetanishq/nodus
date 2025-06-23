@@ -17,11 +17,11 @@ func main() {
     }
 
 	database.InitDB()
-    // database.Migrate()
+    database.Migrate()
 
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"https://nodus.tanishqsingh.com", "https://nodus-puce.vercel.app"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
